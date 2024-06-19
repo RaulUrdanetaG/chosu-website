@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId   String  @unique
+  name     String?
+  imageUrl String
+  email    String  @unique
+  role     Role    @default(USER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cart Item[]
+
+  @@map("users")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model Item {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  imgUrls     String[]
+  price       Int
+  boughtAt    Int
+  description String?
+  sold        Boolean
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  ownerId String @db.ObjectId
+  owner   Owner  @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  locationId String   @db.ObjectId
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  Tag Tag[]
+
+  @@map("items")
+}
+
+model Owner {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  itemCount Int    @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Item Item[]
+
+  @@map("owners")
+}
+
+model Tag {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  itemCount Int    @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Item   Item?   @relation(fields: [itemId], references: [id])
+  itemId String? @db.ObjectId
+
+  @@map("tags")
+}
+
+model Location {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  itemCount Int    @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Item Item[]
+
+  @@map("locations")
+}
