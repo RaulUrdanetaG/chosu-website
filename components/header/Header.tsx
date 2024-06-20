@@ -25,12 +25,7 @@ export default async function Header() {
 
       <div>
         {profile ? (
-          <div className="flex items-center justify-center">
-            <span className="text-sm">
-              <p>Bienvenido</p> <strong>{profile.name?.split(" ", 1)}!</strong>
-            </span>
-            <ProfileButton profile={profile} />
-          </div>
+          <ProfileButton profile={profile} />
         ) : (
           <Link href="/sign-up">
             <Button className="bg-[#5CAB7D]">Ingresar</Button>
