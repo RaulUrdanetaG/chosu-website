@@ -5,5 +5,10 @@ export default function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <Header />;
+  return (
+    <section>
+      <Header />
+      {children}
+    </section>
+  );
 }
