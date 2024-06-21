@@ -2,21 +2,21 @@
 
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
 
-const navigationList = [
-  { name: "Inicio", ref: "/home" },
-  { name: "Tienda", ref: "/shop" },
-  { name: "Sobre Nosotros", ref: "/about-us" },
-  { name: "Contacto", ref: "/contact" },
+const navigationLinks = [
+  { name: "Inicio", href: "/home" },
+  { name: "Tienda", href: "/shop" },
+  { name: "Sobre Nosotros", href: "/about-us" },
+  { name: "Contacto", href: "/contact" },
 ];
 
 export default function NavigationMenu() {
-  const [currentPage, setCurrentPage] = useState("Inicio");
+  const pathName = usePathname();
 
   return (
-    <nav>
-      <ul className="flex gap-12 list-none">
+    <nav className="flex gap-12">
+      {/* <ul className="flex gap-12 list-none">
         {navigationList.map((NavigationItem, i) => (
           <li
             className={cn(
@@ -33,7 +33,21 @@ export default function NavigationMenu() {
             </Link>
           </li>
         ))}
-      </ul>
+      </ul> */}
+
+      {navigationLinks.map((link) => {
+        return (
+          <Link
+            key={link.name}
+            href={link.href}
+            className={cn("text-black/50 hover:text-black transition", {
+              "text-black": link.href === pathName,
+            })}
+          >
+            <p className="hidden md:block">{link.name}</p>
+          </Link>
+        );
+      })}
     </nav>
   );
 }

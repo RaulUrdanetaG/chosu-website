@@ -9,7 +9,7 @@ export default async function Header() {
   const profile = await currentProfile();
 
   return (
-    <header className="flex justify-between items-center py-4 px-6 bg-[#5A9367]">
+    <header className="flex justify-between items-center py-4 px-10 bg-[#5A9367]">
       <div className="flex items-center">
         <Image
           src="/assets/chosu-logo-no-bg.webp"
@@ -23,12 +23,12 @@ export default async function Header() {
         <NavigationMenu />
       </div>
 
-      <div>
+      <div className="w-[75px] flex justify-center">
         {profile ? (
           <ProfileButton profile={profile} />
         ) : (
           <Link href="/sign-up">
-            <Button className="bg-[#5CAB7D]">Ingresar</Button>
+            <Button className="bg-[#5CAB7D] w-[75px]">Ingresar</Button>
           </Link>
         )}
       </div>
