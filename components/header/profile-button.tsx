@@ -62,7 +62,7 @@ export default function ProfileButton({ profile }: ProfileButtonProps) {
         <DropdownMenuSeparator />
         {profile.role === "ADMIN" && (
           <DropdownMenuGroup>
-            <Link href="/admin">
+            <Link href="/admin/home">
               <DropdownMenuItem className="hover:cursor-pointer">
                 <div className="flex items-center justify-center">
                   <UserCog className="w-4 h-4 mr-2" /> <span>Administrar</span>
