@@ -8,7 +8,7 @@ export function MobileToggleHeader() {
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Menu />
+          <Menu className="h-8 w-8" />
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="p-0 flex gap-0">

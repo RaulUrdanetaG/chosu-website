@@ -23,7 +23,7 @@ export default async function Header() {
       <div className="hidden order-2 md:flex-1 md:flex justify-center">
         <NavigationMenu />
       </div>
-      <div className="order-1 w-[75px] md:hidden">
+      <div className="flex justify-center items-center order-1 w-[75px] md:hidden">
         <MobileToggleHeader />
       </div>
 
