@@ -1,7 +1,7 @@
 import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import NavigationMenu from "./navigation-menu";
+import NavigationMenu from "@/components/header/navigation-menu";
 
 export function MobileToggleHeader() {
   return (

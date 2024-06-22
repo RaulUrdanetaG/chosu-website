@@ -1,21 +1,11 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Archive, Home, LogOut, ReceiptText } from "lucide-react";
+import { LogOut } from "lucide-react";
 import Image from "next/image";
-import AdminLinks from "./admin-links";
-
-const adminLinks = [
-  { name: "Inicio", href: "/admin/home", icon: Home },
-  { name: "Ordenes", href: "/admin/orders", icon: ReceiptText },
-  { name: "Productos", href: "/admin/items", icon: Archive },
-];
+import AdminLinks from "@/components/admin-dashboard/admin-links";
 
 export default function AdminSidebar() {
-  const pathName = usePathname();
-
   return (
     <section className="flex h-full flex-col flex-1 w-auto md:w-56 px-3 py-4 bg-white md:bg-gray-100">
       <Link
@@ -29,24 +19,7 @@ export default function AdminSidebar() {
           height="140"
         />
       </Link>
-
       <div className="flex grow flex-col justify-between space-x-0 space-y-2 mt-3 md:mt-0">
-        {/* {adminLinks.map((link) => {
-          const LinkIcon = link.icon;
-          return (
-            <Link
-              key={link.name}
-              href={link.href}
-              className={cn(
-                "flex h-[48px] grow items-center gap-2 rounded-md bg-gray-100 text-sm font-medium hover:bg-dash_primary/30 hover:text-dash_text flex-none justify-start p-2 px-3 mt-3",
-                { "bg-dash_primary/30 text-dash_text": link.href === pathName }
-              )}
-            >
-              <LinkIcon className="w-6" />
-              <p className="block">{link.name}</p>
-            </Link>
-          );
-        })} */}
         <AdminLinks />
         <div className=" h-auto w-full grow rounded-md bg-gray-100 block"></div>
         <Link href="/home" className="flex">

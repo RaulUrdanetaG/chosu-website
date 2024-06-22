@@ -19,7 +19,6 @@ export default async function Header() {
           height={100}
         />
       </div>
-
       <div className="hidden order-2 md:flex-1 md:flex justify-center">
         <NavigationMenu />
       </div>
