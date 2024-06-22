@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Archive, Home, LogOut, ReceiptText } from "lucide-react";
 import Image from "next/image";
+import AdminLinks from "./admin-links";
 
 const adminLinks = [
   { name: "Inicio", href: "/admin/home", icon: Home },
@@ -24,13 +25,13 @@ export default function AdminSidebar() {
         <Image
           src="/assets/chosu-logo-no-bg.webp"
           alt="Logo de chosu"
-          width={140}
-          height={140}
+          width="140"
+          height="140"
         />
       </Link>
 
       <div className="flex grow flex-col justify-between space-x-0 space-y-2 mt-3 md:mt-0">
-        {adminLinks.map((link) => {
+        {/* {adminLinks.map((link) => {
           const LinkIcon = link.icon;
           return (
             <Link
@@ -45,7 +46,8 @@ export default function AdminSidebar() {
               <p className="block">{link.name}</p>
             </Link>
           );
-        })}
+        })} */}
+        <AdminLinks />
         <div className=" h-auto w-full grow rounded-md bg-gray-100 block"></div>
         <Link href="/home" className="flex">
           <button className="flex h-[48px] grow items-center gap-2 rounded-md bg-gray-100 text-sm font-medium hover:bg-dash_primary/30 hover:text-dash_text flex-none justify-start p-2 px-3 mt-1">

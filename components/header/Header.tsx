@@ -1,10 +1,10 @@
-import { currentProfile } from "@/lib/current-profiel";
-import NavigationMenu from "@/components/header/navigation-menu";
+import { currentProfile } from "@/lib/current-profile";
 import Image from "next/image";
 import Link from "next/link";
-import ProfileButton from "@/components/header/profile-button";
 import { Button } from "@/components/ui/button";
-import { MobileToggleHeader } from "./mobbile-toogle";
+import ProfileButton from "@/components/header/profile-button";
+import NavigationMenu from "@/components/header/navigation-menu";
+import { MobileToggleHeader } from "@/components/header/mobile-toggle";
 
 export default async function Header() {
   const profile = await currentProfile();
