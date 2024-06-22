@@ -4,13 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import ProfileButton from "@/components/header/profile-button";
 import { Button } from "@/components/ui/button";
+import { MobileToggleHeader } from "./mobbile-toogle";
 
 export default async function Header() {
   const profile = await currentProfile();
 
   return (
-    <header className="flex justify-between items-center py-4 px-10 bg-[#5A9367]">
-      <div className="flex items-center">
+    <header className="flex justify-between items-center py-4 px-10 bg-primary">
+      <div className="order-2 md:order-1 flex items-center">
         <Image
           src="/assets/chosu-logo-no-bg.webp"
           alt="Logo de chosu venta de garaje"
@@ -19,16 +20,19 @@ export default async function Header() {
         />
       </div>
 
-      <div className="flex-1 flex justify-center">
+      <div className="hidden order-2 md:flex-1 md:flex justify-center">
         <NavigationMenu />
       </div>
+      <div className="order-1 w-[75px] md:hidden">
+        <MobileToggleHeader />
+      </div>
 
-      <div className="w-[75px] flex justify-center">
+      <div className="order-3 w-[75px] flex justify-center">
         {profile ? (
           <ProfileButton profile={profile} />
         ) : (
           <Link href="/sign-up">
-            <Button className="bg-[#5CAB7D] w-[75px]">Ingresar</Button>
+            <Button className="bg-secondary w-[75px]">Ingresar</Button>
           </Link>
         )}
       </div>

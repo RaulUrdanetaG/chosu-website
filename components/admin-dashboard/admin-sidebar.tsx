@@ -16,7 +16,7 @@ export default function AdminSidebar() {
   const pathName = usePathname();
 
   return (
-    <section className="flex h-full flex-col flex-1 w-auto md:w-56 px-3 py-4 bg-gray-100">
+    <section className="flex h-full flex-col flex-1 w-auto md:w-56 px-3 py-4 bg-white md:bg-gray-100">
       <Link
         href="/home"
         className="hidden md:flex items-center justify-center gap-2 mb-5 hover:cursor-pointer"
@@ -33,7 +33,7 @@ export default function AdminSidebar() {
         {adminLinks.map((link) => {
           const LinkIcon = link.icon;
           return (
-            <a
+            <Link
               key={link.name}
               href={link.href}
               className={cn(
@@ -43,12 +43,12 @@ export default function AdminSidebar() {
             >
               <LinkIcon className="w-6" />
               <p className="block">{link.name}</p>
-            </a>
+            </Link>
           );
         })}
         <div className=" h-auto w-full grow rounded-md bg-gray-100 block"></div>
-        <Link href="/home">
-          <button className="flex h-[48px] grow items-center gap-2 rounded-md bg-gray-100 text-sm font-medium hover:bg-dash_primary/30 hover:text-dash_text flex-none justify-start p-2 px-3 mt-3">
+        <Link href="/home" className="flex">
+          <button className="flex h-[48px] grow items-center gap-2 rounded-md bg-gray-100 text-sm font-medium hover:bg-dash_primary/30 hover:text-dash_text flex-none justify-start p-2 px-3 mt-1">
             <LogOut className="w-6" />
             <div className="block">Salir</div>
           </button>
