@@ -7,7 +7,7 @@ import AdminLinks from "@/components/admin-dashboard/admin-links";
 
 export default function AdminSidebar() {
   return (
-    <section className="flex h-full flex-col flex-1 w-auto md:w-56 px-3 py-4 bg-white md:bg-gray-100">
+    <section className="flex h-full flex-col flex-1 w-auto md:w-56 px-3 py-4 pt-0 md:pt-4 bg-white md:bg-gray-100">
       <Link
         href="/home"
         className="hidden md:flex items-center justify-center gap-2 mb-5 hover:cursor-pointer"
@@ -19,7 +19,7 @@ export default function AdminSidebar() {
           height="140"
         />
       </Link>
-      <div className="flex grow flex-col justify-between space-x-0 space-y-2 mt-3 md:mt-0">
+      <div className="flex grow flex-col justify-between space-x-0 space-y-2">
         <AdminLinks />
         <div className=" h-auto w-full grow rounded-md bg-gray-100 block"></div>
         <Link href="/home" className="flex">

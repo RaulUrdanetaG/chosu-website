@@ -1,5 +1,12 @@
 import { Menu } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import AdminSidebar from "./admin-sidebar";
 
@@ -11,7 +18,12 @@ export function MobileToggleAdmin() {
           <Menu />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="p-0 m-0 flex gap-0">
+      <SheetContent side="left" className="flex flex-col p-0 m-0 gap-0">
+        <SheetHeader>
+          <SheetTitle className="text-start px-3 pt-4">
+            Panel de administrador
+          </SheetTitle>
+        </SheetHeader>
         <AdminSidebar />
       </SheetContent>
     </Sheet>
