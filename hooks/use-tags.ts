@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useStore } from "./use-store";
 import axios from "axios";
 
-export function useLocations() {
+export function useTags() {
   const { tags, setTags } = useStore();
 
   useEffect(() => {
