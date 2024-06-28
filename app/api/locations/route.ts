@@ -10,13 +10,13 @@ export async function POST(req: Request) {
   if (!name) return new NextResponse("Owner name missing", { status: 400 });
 
   try {
-    const newOwner = await db.owner.create({
+    const newLocation = await db.location.create({
       data: {
         name: name,
       },
     });
 
-    return NextResponse.json(newOwner);
+    return NextResponse.json(newLocation);
   } catch (error) {
     return new NextResponse("Internal Error", { status: 500 });
   }
@@ -24,10 +24,10 @@ export async function POST(req: Request) {
 
 export async function GET() {
   try {
-    const owners = await db.owner.findMany({});
-    if (!owners) return new NextResponse("Internal Error", { status: 500 });
+    const locations = await db.location.findMany({});
+    if (!locations) return new NextResponse("Internal Error", { status: 500 });
     
-    return NextResponse.json(owners);
+    return NextResponse.json(locations);
   } catch (error) {
     return new NextResponse("Internal Error", { status: 500 });
   }

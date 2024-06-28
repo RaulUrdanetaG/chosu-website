@@ -26,8 +26,8 @@ const formSchema = z.object({
   name: z.string().min(1, { message: "Es necesario el nombre del dueño" }),
 });
 
-export default function NewOwnerButton() {
-  const { owners, setOwners } = useStore();
+export default function NewLocationButton() {
+  const { locations, setLocations } = useStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,9 +39,9 @@ export default function NewOwnerButton() {
   const isLoading = form.formState.isSubmitting;
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    const newOwner = await axios.post("/api/owners", data);
-    owners.push(newOwner.data);
-    setOwners(owners);
+    const newLocation = await axios.post("/api/locations", data);
+    locations.push(newLocation.data);
+    setLocations(locations);
 
     form.reset();
   }
@@ -49,7 +49,7 @@ export default function NewOwnerButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button>Agregar Dueño</Button>
+        <Button>Agregar Ubicación</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <Form {...form}>
