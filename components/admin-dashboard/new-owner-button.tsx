@@ -17,16 +17,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useStore } from "@/hooks/use-store";
+import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Es necesario el nombre del dueño" }),
 });
 
 export default function NewOwnerButton() {
+  const { toast } = useToast();
   const { owners, setOwners } = useStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -39,11 +41,25 @@ export default function NewOwnerButton() {
   const isLoading = form.formState.isSubmitting;
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    const newOwner = await axios.post("/api/owners", data);
-    owners.push(newOwner.data);
-    setOwners(owners);
+    try {
+      const newOwner = await axios.post("/api/owners", data);
 
-    form.reset();
+      owners.push(newOwner.data);
+      setOwners(owners);
+
+      toast({
+        description: "Dueño creado correctamente!",
+      });
+
+      form.reset();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Oh Oh! Algo falló :(",
+        description: "Intenta nuevamente",
+      });
+      console.log(error);
+    }
   }
 
   return (

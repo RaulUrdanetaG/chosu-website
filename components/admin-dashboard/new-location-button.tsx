@@ -17,16 +17,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useStore } from "@/hooks/use-store";
+import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Es necesario el nombre del dueño" }),
 });
 
 export default function NewLocationButton() {
+  const { toast } = useToast();
   const { locations, setLocations } = useStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -39,11 +41,24 @@ export default function NewLocationButton() {
   const isLoading = form.formState.isSubmitting;
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    const newLocation = await axios.post("/api/locations", data);
-    locations.push(newLocation.data);
-    setLocations(locations);
+    try {
+      const newLocation = await axios.post("/api/locations", data);
+      locations.push(newLocation.data);
+      setLocations(locations);
 
-    form.reset();
+      toast({
+        description: "Dueño creado correctamente!",
+      });
+      form.reset();
+      
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Oh Oh! Algo falló :(",
+        description: "Intenta nuevamente",
+      });
+      console.log(error);
+    }
   }
 
   return (

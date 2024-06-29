@@ -5,12 +5,15 @@ type Store = {
   tags: Tag[];
   owners: Owner[];
   locations: Location[];
+};
+
+type Actions = {
   setTags: (tags: Tag[]) => void;
   setOwners: (owners: Owner[]) => void;
   setLocations: (locations: Location[]) => void;
 };
 
-export const useStore = create<Store>((set) => ({
+export const useStore = create<Store & Actions>((set) => ({
   tags: [],
   owners: [],
   locations: [],

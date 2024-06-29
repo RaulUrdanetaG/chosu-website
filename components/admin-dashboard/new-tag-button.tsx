@@ -17,16 +17,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useStore } from "@/hooks/use-store";
+import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Es necesario el nombre del dueño" }),
 });
 
 export default function NewTagButton() {
+  const { toast } = useToast();
   const { tags, setTags } = useStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -39,11 +41,25 @@ export default function NewTagButton() {
   const isLoading = form.formState.isSubmitting;
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    const newTag = await axios.post("/api/tags", data);
-    tags.push(newTag.data);
-    setTags(tags);
+    try {
+      const newTag = await axios.post("/api/tags", data);
 
-    form.reset();
+      tags.push(newTag.data);
+      setTags(tags);
+
+      toast({
+        description: "Etiqueta creada correctamente!",
+      });
+
+      form.reset();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Oh Oh! Algo falló :(",
+        description: "Intenta nuevamente",
+      });
+      console.log(error);
+    }
   }
 
   return (
@@ -64,7 +80,7 @@ export default function NewTagButton() {
                 <FormItem>
                   <FormLabel>Nombre</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nombre del dueño" {...field} />
+                    <Input placeholder="Nombre de la etiqueta" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
