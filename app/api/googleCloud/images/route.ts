@@ -15,17 +15,17 @@ export async function POST(req: Request) {
   if (!images) return new NextResponse("Images missing", { status: 400 });
 
   try {
-    const resUrls: string[] = [];
+    const files = Array.from(images.entries());
 
-    const uploadPromises = Array.from(images.entries()).map(
-      async ([, file]) => {
-        const currentFile = file as File;
-        const fileUrl = await uploadFile(currentFile);
-        resUrls.push(fileUrl);
-      }
-    );
+    const uploadPromises: Promise<string>[] = [];
 
-    await Promise.all(uploadPromises);
+    for (const [, file] of files) {
+      const currentFile = file as File;
+      const promise = uploadFile(currentFile);
+      uploadPromises.push(promise);
+    }
+
+    const resUrls = await Promise.all(uploadPromises);
 
     return NextResponse.json(resUrls);
   } catch (error) {
