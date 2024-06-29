@@ -48,6 +48,7 @@ export default function NewOwnerButton() {
       setOwners(owners);
 
       toast({
+        className: "bg-dash_primary text:dash_secondary",
         description: "Dueño creado correctamente!",
       });
 
@@ -65,7 +66,7 @@ export default function NewOwnerButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button>Agregar Dueño</Button>
+        <Button>Crear Dueño</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <Form {...form}>

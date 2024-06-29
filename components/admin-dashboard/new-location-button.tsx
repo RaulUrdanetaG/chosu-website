@@ -47,10 +47,11 @@ export default function NewLocationButton() {
       setLocations(locations);
 
       toast({
+        className: "bg-dash_primary text:dash_secondary",
         description: "Dueño creado correctamente!",
       });
       form.reset();
-      
+
     } catch (error) {
       toast({
         variant: "destructive",
@@ -64,7 +65,7 @@ export default function NewLocationButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button>Agregar Ubicación</Button>
+        <Button>Crear Ubicación</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <Form {...form}>

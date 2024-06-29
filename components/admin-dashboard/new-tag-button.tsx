@@ -48,6 +48,7 @@ export default function NewTagButton() {
       setTags(tags);
 
       toast({
+        className: "bg-dash_primary text:dash_secondary",
         description: "Etiqueta creada correctamente!",
       });
 
@@ -65,7 +66,7 @@ export default function NewTagButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button>Agregar Etiquieta</Button>
+        <Button>Crear Etiquieta</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <Form {...form}>
