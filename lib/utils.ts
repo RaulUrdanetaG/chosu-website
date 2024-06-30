@@ -1,3 +1,4 @@
+import axios from "axios";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -12,4 +13,21 @@ export function capitalizeFirstLetter(word: string): string {
 
   const lowerCaseWord = word.toLowerCase();
   return lowerCaseWord.charAt(0).toUpperCase() + lowerCaseWord.slice(1);
+}
+
+export async function uploadImages(selectedFiles: File[]) {
+  let imageLinks;
+
+  if (selectedFiles.length > 0) {
+    const imgData = new FormData();
+    selectedFiles.forEach((image) => {
+      imgData.append("file", image);
+    });
+
+    imageLinks = await axios.post("/api/googleCloud/images", imgData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  }
+
+  return imageLinks;
 }
