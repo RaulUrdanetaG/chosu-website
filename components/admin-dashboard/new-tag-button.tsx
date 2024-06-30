@@ -7,53 +7,40 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 
-import z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useStore } from "@/hooks/use-store";
 import { useToast } from "@/components/ui/use-toast";
 import { Plus } from "lucide-react";
-
-const formSchema = z.object({
-  name: z.string().min(1, { message: "Es necesario el nombre del dueño" }),
-});
+import { useState } from "react";
 
 export default function NewTagButton() {
   const { toast } = useToast();
   const { tags, setTags } = useStore();
+  const [name, setName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-    },
-  });
+  async function handleCreate() {
+    setIsLoading(true);
 
-  const isLoading = form.formState.isSubmitting;
-
-  async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
-      const newTag = await axios.post("/api/tags", data);
+      const response = await axios.post("/api/tags", { name });
 
-      tags.push(newTag.data);
-      setTags(tags);
+      if (response.data.exists) {
+        toast({
+          className: "bg-dash_primary text:dash_secondary",
+          description: "Esta etiqueta ya existe!",
+        });
+      } else {
+        tags.push(response.data);
+        setTags(tags);
 
-      toast({
-        className: "bg-dash_primary text:dash_secondary",
-        description: "Etiqueta creada correctamente!",
-      });
+        toast({
+          className: "bg-dash_primary text:dash_secondary",
+          description: "Etiqueta creada correctamente!",
+        });
+      }
 
-      form.reset();
+      setName("");
     } catch (error) {
       toast({
         variant: "destructive",
@@ -61,40 +48,45 @@ export default function NewTagButton() {
         description: "Intenta nuevamente",
       });
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-      <Button size='xs' className="flex justify-center items-center">
-          Etiqueta <Plus className="w4 h-4" />
+        <Button
+          type="button"
+          size="xs"
+          className="flex justify-center items-center"
+        >
+          Etiqueta <Plus className="w-4 h-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="p-2 bg-zinc-100">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col space-y-4"
-          >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Etiqueta</FormLabel>
-                  <FormControl>
-                    <Input className="bg-zinc-200" placeholder="Nombre de la etiqueta" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+        <div className="flex flex-col space-y-4">
+          <div className="flex flex-col">
+            <label htmlFor="name">Etiqueta</label>
+            <input
+              id="name"
+              type="text"
+              placeholder="Nombre del dueño"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="bg-zinc-200 p-2 rounded-md mt-1"
+              required
             />
-            <Button type="submit" disabled={isLoading}>
-              Crear
-            </Button>
-          </form>
-        </Form>
+          </div>
+          <Button
+            type="button"
+            size="sm"
+            onClick={handleCreate}
+            disabled={isLoading}
+          >
+            Crear
+          </Button>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );
