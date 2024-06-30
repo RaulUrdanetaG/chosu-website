@@ -14,17 +14,18 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId   String  @unique
-  name     String?
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  userId   String @unique
+  name     String @default("")
   imageUrl String
-  email    String  @unique
-  role     Role    @default(USER)
+  email    String @unique
+  role     Role   @default(USER)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cart Item[]
+  itemIds String[] @default([]) @db.ObjectId
+  cart    Item[]   @relation(fields: [itemIds], references: [id])
 
   @@map("users")
 }
@@ -39,23 +40,24 @@ model Item {
   name        String
   imgUrls     String[]
   price       Int
-  boughtAt    Int
-  description String?
-  sold        Boolean
+  boughtAt    Int      @default(0)
+  description String   @default("")
+  sold        Boolean  @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId String
-  user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userIds String[] @default([]) @db.ObjectId
+  user    User[]   @relation(fields: [userIds], references: [id])
+
+  tagsIds String[] @default([]) @db.ObjectId
+  Tags    Tag[]    @relation(fields: [tagsIds], references: [id])
 
   ownerId String @db.ObjectId
   owner   Owner  @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   locationId String   @db.ObjectId
   location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
-
-  Tag Tag[]
 
   @@map("items")
 }
@@ -68,7 +70,7 @@ model Owner {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Item Item[]
+  Items Item[]
 
   @@map("owners")
 }
@@ -81,8 +83,8 @@ model Tag {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Item   Item?   @relation(fields: [itemId], references: [id])
-  itemId String? @db.ObjectId
+  itemIds String[] @default([]) @db.ObjectId
+  Items   Item[]   @relation(fields: [itemIds], references: [id])
 
   @@map("tags")
 }
@@ -95,7 +97,7 @@ model Location {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Item Item[]
+  Items Item[]
 
   @@map("locations")
 }
