@@ -6,9 +6,9 @@ export function useImages() {
 
   function handleImageUpload(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
-    const currentLinks = imagePreviews;
-
     if (!files) return;
+
+    const currentLinks = imagePreviews;
 
     setSelectedFiles((prevImages) => [...prevImages, ...Array.from(files)]);
 
@@ -58,8 +58,20 @@ export function useImages() {
     });
   }
 
+  function removeImage(index: number) {
+    setSelectedFiles((prevFiles) => {
+      const newFiles = prevFiles.filter((_, idx) => idx !== index);
+      return newFiles;
+    });
+
+    setImagePreviews((prevPreviews) => {
+      const newPreviews = prevPreviews.filter((_, idx) => idx !== index);
+      return newPreviews;
+    });
+  }
+
   return {
-    images: { selectedFiles, imagePreviews },
+    images: { selectedFiles, imagePreviews, removeImage },
     handleImageUpload,
     resetImages,
     setImagePreviews,
