@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useStore } from "@/hooks/use-store";
 import { useToast } from "@/components/ui/use-toast";
+import { Plus, SquarePlus } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Es necesario el nombre del dueño" }),
@@ -51,7 +52,6 @@ export default function NewLocationButton() {
         description: "Dueño creado correctamente!",
       });
       form.reset();
-
     } catch (error) {
       toast({
         variant: "destructive",
@@ -65,29 +65,35 @@ export default function NewLocationButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button>Crear Ubicación</Button>
+        <Button size='xs' className="flex justify-center items-center">
+          Ubicación <Plus className="w4 h-4" />
+        </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="p-2 bg-zinc-100">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="w-2/3 space-y-6"
+            className="flex flex-col space-y-4"
           >
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nombre</FormLabel>
+                  <FormLabel>Ubicación</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nombre del dueño" {...field} />
+                    <Input
+                      className="bg-zinc-200"
+                      placeholder="Nombre de la ubicación"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <Button type="submit" disabled={isLoading}>
-              Submit
+              Crear
             </Button>
           </form>
         </Form>
