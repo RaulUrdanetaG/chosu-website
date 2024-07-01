@@ -1,18 +1,26 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useModal } from "@/hooks/use-modal";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogTitle,
-} from "@/components/ui/dialog";
-
 import z from "zod";
 import axios from "axios";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { uploadImages } from "@/lib/utils";
+
+import { useModal } from "@/hooks/use-modal";
+import { useOwners } from "@/hooks/use-owners";
+import { useLocations } from "@/hooks/use-locations";
+import { useTags } from "@/hooks/use-tags";
+import { useImages } from "@/hooks/use-images";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import NewOwnerButton from "@/components/admin-dashboard/new-owner-button";
+import Images from "@/components/admin-dashboard/Images";
+import LocationSelector from "@/components/admin-dashboard/location-selector";
+import TagSelector from "@/components/admin-dashboard/tag-selector";
+
 import {
   Form,
   FormControl,
@@ -21,17 +29,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import NewOwnerButton from "@/components/admin-dashboard/new-owner-button";
-import { useOwners } from "@/hooks/use-owners";
-import { useLocations } from "@/hooks/use-locations";
-import NewLocationButton from "@/components/admin-dashboard/new-location-button";
-import NewTagButton from "@/components/admin-dashboard/new-tag-button";
-import { useTags } from "@/hooks/use-tags";
-
-import { useImages } from "@/hooks/use-images";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -39,15 +43,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Images from "../admin-dashboard/Images";
-import { uploadImages } from "@/lib/utils";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useState } from "react";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Es necesario el nombre del producto" }),
@@ -61,11 +56,8 @@ const formSchema = z.object({
 
 export default function AddItemModal() {
   const { owners } = useOwners();
-
-  const { locations, selectedLocation, setSelectedLocation, resetLocation } =
-    useLocations();
+  const { locations, selectedLocation, setSelectedLocation, resetLocation } = useLocations();
   const { tags, selectedTags, setSelectedTags, resetTags } = useTags();
-
   const { images, resetImages, handleImageUpload, shift } = useImages();
 
   const { isOpen, onClose, type } = useModal();
@@ -114,6 +106,8 @@ export default function AddItemModal() {
   function handleClose() {
     form.reset();
     resetImages();
+    resetTags();
+    resetLocation();
     onClose();
   }
 
@@ -121,6 +115,10 @@ export default function AddItemModal() {
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent>
         <DialogTitle hidden>Crear articulo</DialogTitle>
+        <DialogDescription hidden>
+          Llena el formulario para crear un articulo
+        </DialogDescription>
+
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -232,89 +230,16 @@ export default function AddItemModal() {
                 />
                 <NewOwnerButton />
               </div>
-
-              <div className="flex flex-col justify-between gap-1">
-                <div className="space-y-2">
-                  <p className="flex items-center text-[14px] font-medium mt-[3px]">
-                    Etiquetas
-                  </p>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <button
-                        className="flex justify-center items-center w-[80px] bg-[#f4f4f5] text-[#7B7E86] 
-                        font-medium px-2 py-3 text-sm rounded-md "
-                      >
-                        {selectedTags.length === 0
-                          ? "Elige"
-                          : selectedTags.length}
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent side="top" className="max-w-[360px]">
-                      <ToggleGroup
-                        type="multiple"
-                        onValueChange={handleTagsGroupChange}
-                        value={selectedTags}
-                        className="flex flex-wrap p-1"
-                      >
-                        {tags.map((tag) => (
-                          <ToggleGroupItem
-                            variant="outline"
-                            key={tag.id}
-                            value={tag.id}
-                          >
-                            {tag.name}
-                          </ToggleGroupItem>
-                        ))}
-                      </ToggleGroup>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-                <NewTagButton />
-              </div>
-              <div className="flex flex-col justify-between gap-1">
-                <div className="space-y-2">
-                  <p className="flex items-center text-[14px] font-medium mt-[3px]">
-                    Ubicaciones
-                  </p>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <button
-                        className="flex justify-center items-center w-[89px] bg-[#f4f4f5] text-[#7B7E86] 
-                        font-medium px-2 py-3 text-sm rounded-md "
-                      >
-                        {selectedLocation.length === 0 ? "Elige" : "1"}
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                      side="top"
-                      className="p-2 w-[350px] h-[180px]"
-                    >
-                      <div className="locations">
-                        <ToggleGroup
-                          type="single"
-                          onValueChange={handleLocationGroupChange}
-                          value={selectedLocation}
-                          className="locations-grid h-full p-1"
-                        >
-                          {locations.map((tag, i) => (
-                            <ToggleGroupItem
-                              variant="locationSelect"
-                              size="full"
-                              key={tag.id}
-                              value={tag.id}
-                              className={`item-${i}`}
-                            >
-                              {i === 0 ? tag.name : ""}
-                            </ToggleGroupItem>
-                          ))}
-                        </ToggleGroup>
-                      </div>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-
-                <NewLocationButton />
-              </div>
+              <TagSelector
+                selectedTags={selectedTags}
+                tags={tags}
+                handleGroupChange={handleTagsGroupChange}
+              />
+              <LocationSelector
+                selectedLocation={selectedLocation}
+                locations={locations}
+                handleGroupChange={handleLocationGroupChange}
+              />
             </div>
             <DialogFooter className="pt-4 flex gap-1">
               <Button

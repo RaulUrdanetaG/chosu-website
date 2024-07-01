@@ -11,8 +11,8 @@ const toggleVariants = cva(
   {
     variants: {
       variant: {
-        locationSelect:
-          "bg-zinc-100 hover:bg-dash_primary hover:text-dash_secondary data-[state=on]:bg-dash_primary data-[state=on]:text-dash_secondary",
+        itemSelect:
+          "bg-zinc-100 hover:bg-dash_primary hover:text-dash_text data-[state=on]:bg-dash_primary data-[state=on]:text-dash_text",
         default: "bg-transparent",
         outline:
           "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground",
