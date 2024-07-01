@@ -8,8 +8,11 @@ interface itemDataProps {
     description: string;
     price: number;
     boughtAt: number;
+    owner: string;
   };
   imageLinks: string[];
+  tags: string[];
+  location: string;
 }
 
 export async function POST(req: Request) {
@@ -20,8 +23,6 @@ export async function POST(req: Request) {
   if (!itemData)
     return new NextResponse("Form values missing", { status: 400 });
 
-  console.log(itemData.values.name);
-
   try {
     const newItem = {
       name: itemData.values.name,
@@ -29,16 +30,17 @@ export async function POST(req: Request) {
       boughtAt: itemData.values.boughtAt,
       description: itemData.values.description,
       imgUrls: itemData.imageLinks,
-      owner: "Owner ID", // Asegúrate de proporcionar el ID del propietario
-      location: "Item Location", // Asegúrate de proporcionar la ubicación
+      owner: itemData.values.owner, // Asegúrate de proporcionar el ID del propietario
+      location: itemData.location,
+      tags: itemData.tags, // Asegúrate de proporcionar la ubicación
     };
-    await db.item.create({
-      data: newItem,
-    });
+
+    console.log(newItem);
+    // await db.item.create({
+    //   data: newItem,
+    // });
+    return new NextResponse("succes", { status: 200 });
   } catch (error) {
     return new NextResponse("Internal Error", { status: 500 });
   }
-
-  console.log(itemData);
-  console.log(itemData.imageLinks);
 }
