@@ -8,7 +8,7 @@ body,
   height: 100%;
 }
 
-*{
+* {
   margin: 0;
   border: 0;
   padding: 0;
@@ -85,4 +85,55 @@ body,
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.locations {
+  background-image: url("/assets/chosu-locations.webp");
+  background-size: contain; /* Ajusta la imagen para que esté completamente visible */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  background-position: center;
+  height: 100%; /* Ajusta la altura según sea necesario */
+  width: 100%;
+}
+
+.item-1 {
+  grid-area: Da;
+}
+.item-2 {
+  grid-area: Df;
+}
+.item-3 {
+  grid-area: Dma;
+}
+.item-4 {
+  grid-area: Dmf;
+}
+.item-5 {
+  grid-area: Ia;
+}
+.item-6 {
+  grid-area: If;
+}
+.item-7 {
+  grid-area: Ima;
+}
+.item-8 {
+  grid-area: Imf;
+}
+.item-0 {
+  grid-area: chosu;
+  margin-top: 25px;
+}
+
+.locations-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 49.5px 49.5px 25px;
+  grid-template-areas:
+    "Ia Ima Dma Da"
+    "If Imf Dmf Df"
+    "chosu chosu chosu chosu";
+
+    margin: 10px 5px;
+    padding: 10px 2px;
 }

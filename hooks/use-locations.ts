@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useStore } from "./use-store";
 import axios from "axios";
 
 export function useLocations() {
   const { locations, setLocations } = useStore();
+  const [selectedLocation, setSelectedLocation] = useState<string>("");
 
   useEffect(() => {
     async function getLocations() {
@@ -13,5 +14,9 @@ export function useLocations() {
     getLocations();
   }, [setLocations]);
 
-  return { locations };
+  function resetLocation() {
+    setSelectedLocation("");
+  }
+
+  return { locations, selectedLocation, setSelectedLocation, resetLocation };
 }
