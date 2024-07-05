@@ -26,12 +26,12 @@ export default function TagSelector({
         </p>
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <button
+            <span
               className="flex justify-center items-center w-[80px] bg-[#f4f4f5] text-[#7B7E86] 
                         font-medium px-2 py-3 text-sm rounded-md "
             >
               {selectedTags.length === 0 ? "Elige" : selectedTags.length}
-            </button>
+            </span>
           </DropdownMenuTrigger>
           <DropdownMenuContent side="top" className="max-w-[360px]">
             <ToggleGroup

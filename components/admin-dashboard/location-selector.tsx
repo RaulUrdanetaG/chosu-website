@@ -26,12 +26,12 @@ export default function LocationSelector({
         </p>
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <button
+            <span
               className="flex justify-center items-center w-[89px] bg-[#f4f4f5] text-[#7B7E86] 
           font-medium px-2 py-3 text-sm rounded-md "
             >
               {selectedLocation.length === 0 ? "Elige" : "1"}
-            </button>
+            </span>
           </DropdownMenuTrigger>
           <DropdownMenuContent side="top" className="p-2 w-[350px] h-[180px]">
             <div className="locations">
