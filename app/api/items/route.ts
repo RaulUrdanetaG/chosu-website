@@ -35,10 +35,19 @@ export async function POST(req: Request) {
       tags: itemData.tags, // Asegúrate de proporcionar la ubicación
     };
 
-    console.log(newItem);
-    // await db.item.create({
-    //   data: newItem,
-    // });
+    await db.item.create({
+      data: {
+        name: newItem.name,
+        price: newItem.price,
+        boughtAt: newItem.boughtAt,
+        description: newItem.description,
+        imgUrls: newItem.imgUrls,
+        ownerId: newItem.owner,
+        locationId: newItem.location,
+        tagsIds: newItem.tags,
+      },
+    });
+
     return new NextResponse("succes", { status: 200 });
   } catch (error) {
     return new NextResponse("Internal Error", { status: 500 });
