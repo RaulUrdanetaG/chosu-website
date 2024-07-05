@@ -1,6 +1,8 @@
 // import { Channel, ChannelType, Server } from "@prisma/client";
 import { create } from "zustand";
 
+// TODO: add ModalData to match item, for edit item purposes
+
 export type ModalType =
   | "createItem"
 
