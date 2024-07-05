@@ -10,12 +10,16 @@ import NewLocationButton from "./new-location-button";
 interface LocationSelectorProps {
   selectedLocation: string;
   locations: Location[];
+  type: "id" | "name";
+  add: boolean;
   handleGroupChange: (value: string) => void;
 }
 
 export default function LocationSelector({
   selectedLocation,
   locations,
+  type,
+  add,
   handleGroupChange,
 }: LocationSelectorProps) {
   return (
@@ -41,24 +45,36 @@ export default function LocationSelector({
                 value={selectedLocation}
                 className="locations-grid h-full p-1"
               >
-                {locations.map((tag, i) => (
-                  <ToggleGroupItem
-                    variant="itemSelect"
-                    size="full"
-                    key={tag.id}
-                    value={tag.id}
-                    className={`item-${i}`}
-                  >
-                    {i === 0 ? tag.name : ""}
-                  </ToggleGroupItem>
-                ))}
+                {type === "id"
+                  ? locations.map((tag, i) => (
+                      <ToggleGroupItem
+                        variant="itemSelect"
+                        size="full"
+                        key={tag.id}
+                        value={tag.id}
+                        className={`item-${i}`}
+                      >
+                        {i === 0 ? tag.name : ""}
+                      </ToggleGroupItem>
+                    ))
+                  : locations.map((tag, i) => (
+                      <ToggleGroupItem
+                        variant="itemSelect"
+                        size="full"
+                        key={tag.id}
+                        value={tag.name}
+                        className={`item-${i}`}
+                      >
+                        {i === 0 ? tag.name : ""}
+                      </ToggleGroupItem>
+                    ))}
               </ToggleGroup>
             </div>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
-      {/* <NewLocationButton /> */}
+      {add && <NewLocationButton />}
     </div>
   );
 }

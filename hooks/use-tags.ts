@@ -18,5 +18,10 @@ export function useTags() {
     setSelectedTags([]);
   }
 
-  return { tags, selectedTags, setSelectedTags, resetTags };
+  return {
+    tags,
+    selectedTags,
+    setSelectedTags,
+    resetTags,
+  };
 }

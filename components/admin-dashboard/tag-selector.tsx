@@ -10,12 +10,16 @@ import { Tag } from "@prisma/client";
 interface TagSelectorProps {
   selectedTags: string[];
   tags: Tag[];
+  type: "id" | "name";
+  add: boolean;
   handleGroupChange: (value: string[]) => void;
 }
 
 export default function TagSelector({
   selectedTags,
   tags,
+  type,
+  add,
   handleGroupChange,
 }: TagSelectorProps) {
   return (
@@ -41,16 +45,30 @@ export default function TagSelector({
               value={selectedTags}
               className="flex flex-wrap p-1"
             >
-              {tags.map((tag) => (
-                <ToggleGroupItem variant="outline" key={tag.id} value={tag.id}>
-                  {tag.name}
-                </ToggleGroupItem>
-              ))}
+              {type === "id"
+                ? tags.map((tag) => (
+                    <ToggleGroupItem
+                      variant="outline"
+                      key={tag.id}
+                      value={tag.id}
+                    >
+                      {tag.name}
+                    </ToggleGroupItem>
+                  ))
+                : tags.map((tag) => (
+                    <ToggleGroupItem
+                      variant="outline"
+                      key={tag.id}
+                      value={tag.name}
+                    >
+                      {tag.name}
+                    </ToggleGroupItem>
+                  ))}
             </ToggleGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <NewTagButton />
+      {add && <NewTagButton />}
     </div>
   );
 }
