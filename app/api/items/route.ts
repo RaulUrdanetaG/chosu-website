@@ -57,13 +57,67 @@ export async function POST(req: Request) {
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
-  const filter = url.searchParams.getAll('q');
+  const filter = url.searchParams.get("q");
+  const owner = url.searchParams.get("o");
+  const location = url.searchParams.get("l");
+  const tags = url.searchParams.get("t");
 
-  console.log(filter);
+  const filters: any = {};
 
-  // console.log(params);
+  if (location) {
+    const locationRecord = await db.location.findFirst({
+      where: { name: location as string },
+    });
+    if (locationRecord) {
+      filters.locationId = locationRecord.id;
+    }
+  }
+
+  if (tags) {
+    const tagsArray = (tags as string).split(" ");
+    const tagsRecords = await db.tag.findMany({
+      where: {
+        name: { in: tagsArray },
+      },
+    });
+    const tagsIds = tagsRecords.map((tag) => tag.id);
+    filters.tagsIds = { hasSome: tagsIds };
+  }
+
+  if (owner) {
+    const ownerRecord = await db.owner.findFirst({
+      where: {
+        name: owner as string,
+      },
+    });
+    if (ownerRecord) {
+      filters.ownerId = ownerRecord.id;
+    }
+  }
+
+  if (filter) {
+    filters.name = {
+      contains: filter as string,
+      mode: "insensitive",
+    };
+  }
+
   try {
-    return new NextResponse("success", { status: 200 });
+    const items = await db.item.findMany({
+      where: filters,
+      include: {
+        location: true,
+        Tags: true,
+        owner: true,
+      },
+      orderBy: {
+        name: "asc",
+      },
+    });
+
+    if (!items) return NextResponse.json({ message: "No items" });
+
+    return NextResponse.json(items);
   } catch (error) {
     return new NextResponse("Internal Error", { status: 500 });
   }
