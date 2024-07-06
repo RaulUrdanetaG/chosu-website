@@ -18,5 +18,10 @@ export function useLocations() {
     setSelectedLocation("");
   }
 
-  return { locations, selectedLocation, setSelectedLocation, resetLocation };
+  return {
+    locations,
+    selectedLocation,
+    setSelectedLocation,
+    resetLocation,
+  };
 }

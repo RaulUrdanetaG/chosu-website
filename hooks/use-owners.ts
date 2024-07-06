@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useStore } from "./use-store";
 import axios from "axios";
 
 export function useOwners() {
   const { owners, setOwners } = useStore();
+  const [selectedOwner, setSelectedOwner] = useState<string>("");
 
   useEffect(() => {
     async function getOwners() {
@@ -13,5 +14,9 @@ export function useOwners() {
     getOwners();
   }, [setOwners]);
 
-  return { owners };
+  function resetOwner() {
+    setSelectedOwner("");
+  }
+
+  return { owners, selectedOwner, setSelectedOwner, resetOwner };
 }
