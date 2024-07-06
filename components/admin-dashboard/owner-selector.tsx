@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { cn } from "@/lib/utils";
 
 interface LocationSelectorProps {
   selectedOwner: string;
@@ -32,13 +33,23 @@ export default function OwnerSelector({
   handleGroupChange,
 }: LocationSelectorProps) {
   return (
-    <div className="flex flex-col justify-between gap-1">
-      <div className="space-y-2">
-        <p className="flex items-center text-[14px] font-medium mt-[3px]">
+    <div className="flex flex-col justify-between items-center gap-1">
+      <div className={cn(type === "id" ? "space-y-2" : "flex flex-col items-center space-y-1")}>
+        <p
+          className={cn(
+            "flex items-center  font-medium mt-[3px]",
+            type === "id" ? "text-[14px]" : "text-[11px]"
+          )}
+        >
           Dueño
         </p>
         <Select onValueChange={handleGroupChange} value={selectedOwner}>
-          <SelectTrigger className="bg-zinc-100 w-[80px] h-[44px]">
+          <SelectTrigger
+            className={cn(
+              "bg-zinc-100 ",
+              type === "id" ? "w-[80px] h-[44px]" : "h-9 w-16"
+            )}
+          >
             <SelectValue className="bg-zinc-100" />
           </SelectTrigger>
           <SelectContent>

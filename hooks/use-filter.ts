@@ -23,6 +23,7 @@ export function useFilter() {
 
   function resetFilters() {
     setFilterText("");
+
     setLocationFilter("");
     setOwnerFilter("");
     setTagsFilter([]);

@@ -1,6 +1,7 @@
+import { useFilter } from "@/hooks/use-filter";
 import { checkAdmin } from "@/lib/check-admin";
 import { db } from "@/lib/db";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 interface itemDataProps {
   values: {
@@ -48,7 +49,21 @@ export async function POST(req: Request) {
       },
     });
 
-    return new NextResponse("succes", { status: 200 });
+    return new NextResponse("success", { status: 200 });
+  } catch (error) {
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
+export async function GET(req: NextRequest) {
+  const url = new URL(req.url);
+  const filter = url.searchParams.getAll('q');
+
+  console.log(filter);
+
+  // console.log(params);
+  try {
+    return new NextResponse("success", { status: 200 });
   } catch (error) {
     return new NextResponse("Internal Error", { status: 500 });
   }

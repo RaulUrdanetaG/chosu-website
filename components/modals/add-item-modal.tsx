@@ -56,7 +56,8 @@ const formSchema = z.object({
 
 export default function AddItemModal() {
   const { owners } = useOwners();
-  const { locations, selectedLocation, setSelectedLocation, resetLocation } = useLocations();
+  const { locations, selectedLocation, setSelectedLocation, resetLocation } =
+    useLocations();
   const { tags, selectedTags, setSelectedTags, resetTags } = useTags();
   const { images, resetImages, handleImageUpload, shift } = useImages();
 
@@ -80,8 +81,6 @@ export default function AddItemModal() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const imageLinks = await uploadImages(images.selectedFiles);
 
-    console.log(imageLinks);
-
     axios.post("/api/items", {
       values,
       imageLinks: imageLinks?.data,
@@ -93,14 +92,6 @@ export default function AddItemModal() {
     resetImages();
     resetTags();
     resetLocation();
-  }
-
-  function handleTagsGroupChange(value: string[]) {
-    setSelectedTags(value);
-  }
-
-  function handleLocationGroupChange(value: string) {
-    setSelectedLocation(value);
   }
 
   function handleClose() {
@@ -233,12 +224,16 @@ export default function AddItemModal() {
               <TagSelector
                 selectedTags={selectedTags}
                 tags={tags}
-                handleGroupChange={handleTagsGroupChange}
+                handleGroupChange={setSelectedTags}
+                type="id"
+                add
               />
               <LocationSelector
                 selectedLocation={selectedLocation}
                 locations={locations}
-                handleGroupChange={handleLocationGroupChange}
+                handleGroupChange={setSelectedLocation}
+                type="id"
+                add={false}
               />
             </div>
             <DialogFooter className="pt-4 flex gap-1">
