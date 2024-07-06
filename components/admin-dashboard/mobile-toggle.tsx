@@ -23,6 +23,9 @@ export function MobileToggleAdmin() {
           <SheetTitle className="text-start px-3 pt-4">
             Panel de administrador
           </SheetTitle>
+          <SheetDescription className="text-start px-3">
+            Navega a través del panel de administrador
+          </SheetDescription>
         </SheetHeader>
         <AdminSidebar />
       </SheetContent>
