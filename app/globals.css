@@ -134,6 +134,14 @@ body,
     "If Imf Dmf Df"
     "chosu chosu chosu chosu";
 
-    margin: 10px 5px;
-    padding: 10px 2px;
+  margin: 10px 5px;
+  padding: 10px 2px;
+}
+
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px;
+  align-items: start;
+  padding: 12px;
 }

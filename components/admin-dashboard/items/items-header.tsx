@@ -114,7 +114,7 @@ export default function ItemsHeader() {
               />
             </div>
             <a
-              className="flex w-[200px] items-center justify-center md:hidden bg-[#EF6F6C] rounded-md py-1"
+              className="flex w-[200px] items-center justify-center md:hidden bg-[#EF6F6C] rounded-md py-1 hover:cursor-pointer"
               onClick={restoreFilters}
             >
               Limpiar filtros
@@ -122,7 +122,7 @@ export default function ItemsHeader() {
           </SheetContent>
         </Sheet>
         <a
-          className="hidden md:flex ml-2 items-center justify-center bg-[#EF6F6C] rounded-md p-1 px-2 text-[13px]"
+          className="hidden md:flex ml-2 items-center justify-center bg-[#EF6F6C] rounded-md p-1 px-2 text-[13px] hover:cursor-pointer"
           onClick={restoreFilters}
         >
           Limpiar filtros
