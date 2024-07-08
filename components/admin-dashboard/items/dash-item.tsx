@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { useModal } from "@/hooks/use-modal";
 import { formatPrice } from "@/lib/utils";
 import { DashItemType } from "@/types";
 
@@ -15,7 +16,9 @@ const locationImages: { [key: string]: string } = {
 };
 
 export default function DashItem({ item }: { item: DashItemType }) {
+  const { onOpen } = useModal();
   const locationImage = item.location.name;
+
   return (
     <div className="flex flex-col p-2 shadow-lg rounded-md">
       <div className="flex justify-center items-center h-[200px]">
@@ -36,7 +39,11 @@ export default function DashItem({ item }: { item: DashItemType }) {
         alt={`Location image for ${item.location.name}`}
         className="w-[150px]"
       />
-      <a className="flex px-2 py-1 mt-2 rounded-md items-center justify-center bg-dash_primary text-dash_text hover:cursor-pointer">
+      <a
+        className="flex px-2 py-1 mt-2 rounded-md items-center justify-center bg-dash_primary 
+      text-dash_text hover:cursor-pointer"
+        onClick={() => onOpen("editItem", { item })}
+      >
         Editar
       </a>
     </div>

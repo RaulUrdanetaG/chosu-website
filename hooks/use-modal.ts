@@ -1,12 +1,13 @@
 // import { Channel, ChannelType, Server } from "@prisma/client";
+import { DashItemType } from "@/types";
 import { create } from "zustand";
 
 // TODO: add ModalData to match item, for edit item purposes
 
-export type ModalType =
-  | "createItem"
+export type ModalType = "createItem" | "editItem";
 
 interface ModalData {
+  item?: DashItemType;
   apiUrl?: string;
   query?: Record<string, any>;
   message?: {
@@ -33,5 +34,5 @@ export const useModal = create<ModalStore>((set) => ({
   data: {},
   isOpen: false,
   onOpen: (type, data = {}) => set({ isOpen: true, type, data }),
-  onClose: () => set({ isOpen: false, type: null }),
+  onClose: () => set({ isOpen: false, type: null, data: {} }),
 }));

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import AddItemModal from "@/components/modals/add-item-modal";
+import EditItemModal from "@/components/modals/edit-item-modal";
 
 export function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false);
@@ -16,6 +17,7 @@ export function ModalProvider() {
   return (
     <>
       <AddItemModal />
+      <EditItemModal />
     </>
   );
 }

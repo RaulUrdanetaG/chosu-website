@@ -10,11 +10,16 @@ export function useImages() {
 
     const currentLinks = imagePreviews;
 
-    setSelectedFiles((prevImages) => [...prevImages, ...Array.from(files)]);
+    setSelectedFiles((prevImages) => [
+      ...prevImages,
+      ...Array.from(files).reverse(),
+    ]);
 
-    Array.from(files).forEach((file) => {
-      currentLinks.push(URL.createObjectURL(file));
-    });
+    Array.from(files)
+      .reverse()
+      .forEach((file) => {
+        currentLinks.push(URL.createObjectURL(file));
+      });
 
     setImagePreviews(currentLinks);
   }
@@ -59,10 +64,12 @@ export function useImages() {
   }
 
   function removeImage(index: number) {
-    setSelectedFiles((prevFiles) => {
-      const newFiles = prevFiles.filter((_, idx) => idx !== index);
-      return newFiles;
-    });
+    if (imagePreviews[index].startsWith("blob")) {
+      setSelectedFiles((prevFiles) => {
+        const newFiles = prevFiles.filter((_, idx) => idx !== index);
+        return newFiles;
+      });
+    }
 
     setImagePreviews((prevPreviews) => {
       const newPreviews = prevPreviews.filter((_, idx) => idx !== index);
