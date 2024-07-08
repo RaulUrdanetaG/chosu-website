@@ -8,20 +8,17 @@ export function useImages() {
     const files = event.target.files;
     if (!files) return;
 
-    const currentLinks = imagePreviews;
+    console.log(selectedFiles);
 
     setSelectedFiles((prevImages) => [
       ...prevImages,
       ...Array.from(files).reverse(),
     ]);
 
-    Array.from(files)
-      .reverse()
-      .forEach((file) => {
-        currentLinks.push(URL.createObjectURL(file));
-      });
-
-    setImagePreviews(currentLinks);
+    const newPreviews = Array.from(files).map((file) =>
+      URL.createObjectURL(file)
+    );
+    setImagePreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
   }
 
   function resetImages() {
@@ -64,12 +61,10 @@ export function useImages() {
   }
 
   function removeImage(index: number) {
-    if (imagePreviews[index].startsWith("blob")) {
-      setSelectedFiles((prevFiles) => {
-        const newFiles = prevFiles.filter((_, idx) => idx !== index);
-        return newFiles;
-      });
-    }
+    setSelectedFiles((prevFiles) => {
+      const newFiles = prevFiles.filter((_, idx) => idx !== index);
+      return newFiles;
+    });
 
     setImagePreviews((prevPreviews) => {
       const newPreviews = prevPreviews.filter((_, idx) => idx !== index);
@@ -82,6 +77,7 @@ export function useImages() {
     handleImageUpload,
     resetImages,
     setImagePreviews,
+    setSelectedFiles,
     shift: { right, left },
   };
 }

@@ -21,7 +21,7 @@ export async function uploadImages(selectedFiles: File[]) {
   if (selectedFiles.length > 0) {
     const imgData = new FormData();
     selectedFiles.forEach((image) => {
-      imgData.append("file", image);
+      if (image !== null) imgData.append("file", image);
     });
 
     imageLinks = await axios.post("/api/googleCloud/images", imgData, {

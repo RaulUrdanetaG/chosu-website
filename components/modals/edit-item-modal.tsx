@@ -60,8 +60,14 @@ export default function EditItemModal() {
   const { locations, selectedLocation, setSelectedLocation, resetLocation } =
     useLocations();
   const { tags, selectedTags, setSelectedTags, resetTags } = useTags();
-  const { images, setImagePreviews, resetImages, handleImageUpload, shift } =
-    useImages();
+  const {
+    images,
+    setImagePreviews,
+    setSelectedFiles,
+    resetImages,
+    handleImageUpload,
+    shift,
+  } = useImages();
 
   const { isOpen, onClose, type, data } = useModal();
   const { item } = data;
@@ -113,8 +119,6 @@ export default function EditItemModal() {
     onClose();
   }
 
-  console.log(images, item?.imgUrls);
-
   useEffect(() => {
     if (item) {
       form.setValue("name", item.name);
@@ -125,8 +129,23 @@ export default function EditItemModal() {
       setSelectedTags(item.tagsIds);
       setSelectedLocation(item.locationId);
       setImagePreviews(item.imgUrls);
+
+      // Creates an array with the same length as item images so the
+      // shift and remove functions keep the imagePreviews and selectedFiles
+      // array in sync
+      const newRelationArray = Array(item.imgUrls.length).fill(
+        null as unknown as File
+      );
+      setSelectedFiles(newRelationArray);
     }
-  }, [item, setSelectedTags, setSelectedLocation, setImagePreviews, form]);
+  }, [
+    item,
+    setSelectedTags,
+    setSelectedLocation,
+    setImagePreviews,
+    setSelectedFiles,
+    form,
+  ]);
 
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
