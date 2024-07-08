@@ -56,11 +56,11 @@ export default function Images({
         </label>
         <input
           hidden
+          name="images"
           type="file"
           id="img-input"
           onChange={handleImageUpload}
           accept="image/*"
-          required
           multiple
         />
       </div>

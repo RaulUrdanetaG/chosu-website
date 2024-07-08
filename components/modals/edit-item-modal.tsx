@@ -100,15 +100,13 @@ export default function EditItemModal() {
 
     axios.patch("/api/items", {
       values,
+      id: item?.id,
       imageLinks: images.imagePreviews,
       tags: selectedTags,
       location: selectedLocation,
     });
 
-    form.reset();
-    resetImages();
-    resetTags();
-    resetLocation();
+    onClose();
   }
 
   function handleClose() {
@@ -248,7 +246,7 @@ export default function EditItemModal() {
                       <FormLabel>Dueño</FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        value={item?.ownerId}
+                        defaultValue={item?.ownerId}
                       >
                         <FormControl>
                           <SelectTrigger className="bg-zinc-100">

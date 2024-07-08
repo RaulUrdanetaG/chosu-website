@@ -14,6 +14,7 @@ interface itemDataProps {
   imageLinks: string[];
   tags: string[];
   location: string;
+  id?: string;
 }
 
 export async function POST(req: Request) {
@@ -46,6 +47,50 @@ export async function POST(req: Request) {
         ownerId: newItem.owner,
         locationId: newItem.location,
         tagsIds: newItem.tags,
+      },
+    });
+
+    return new NextResponse("success", { status: 200 });
+  } catch (error) {
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
+export async function PATCH(req: Request) {
+  const admin = await checkAdmin();
+  const itemData: itemDataProps = await req.json();
+
+  if (!admin) return new NextResponse("Unauthorized", { status: 401 });
+  if (!itemData)
+    return new NextResponse("Form values missing", { status: 400 });
+  if (!itemData.id) return new NextResponse("Item id missing", { status: 400 });
+
+  try {
+    const updateItem = {
+      id: itemData.id,
+      name: itemData.values.name,
+      price: itemData.values.price,
+      boughtAt: itemData.values.boughtAt,
+      description: itemData.values.description,
+      imgUrls: itemData.imageLinks,
+      owner: itemData.values.owner,
+      location: itemData.location,
+      tags: itemData.tags,
+    };
+
+    await db.item.updateMany({
+      where: {
+        id: updateItem.id,
+      },
+      data: {
+        name: updateItem.name,
+        price: updateItem.price,
+        boughtAt: updateItem.boughtAt,
+        description: updateItem.description,
+        imgUrls: updateItem.imgUrls,
+        ownerId: updateItem.owner,
+        locationId: updateItem.location,
+        tagsIds: updateItem.tags,
       },
     });
 

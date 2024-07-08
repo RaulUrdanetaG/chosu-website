@@ -8,7 +8,7 @@ import { Archive, Home, ReceiptText } from "lucide-react";
 const adminLinks = [
   { name: "Inicio", href: "/admin/home", icon: Home },
   { name: "Pedidos", href: "/admin/orders", icon: ReceiptText },
-  { name: "Productos", href: "/admin/items", icon: Archive },
+  { name: "Articulos", href: "/admin/items", icon: Archive },
 ];
 
 export default function AdminLinks() {
