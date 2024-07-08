@@ -98,7 +98,7 @@ export default function EditItemModal() {
       }
     });
 
-    axios.patch("/api/items", {
+    await axios.patch("/api/items", {
       values,
       id: item?.id,
       imageLinks: images.imagePreviews,

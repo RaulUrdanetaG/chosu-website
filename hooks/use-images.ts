@@ -8,8 +8,6 @@ export function useImages() {
     const files = event.target.files;
     if (!files) return;
 
-    console.log(selectedFiles);
-
     setSelectedFiles((prevImages) => [
       ...prevImages,
       ...Array.from(files).reverse(),

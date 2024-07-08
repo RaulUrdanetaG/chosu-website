@@ -3,6 +3,7 @@
 import DashItem from "@/components/admin-dashboard/items/dash-item";
 import { DashItemSkeletonGrid } from "@/components/admin-dashboard/items/dash-item-skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useModal } from "@/hooks/use-modal";
 import { DashItemType } from "@/types";
 
 import axios from "axios";
@@ -11,6 +12,7 @@ import { useEffect, useState } from "react";
 
 export default function ItemsPage() {
   const searchParams = useSearchParams();
+  const { isOpen } = useModal();
 
   const [currentItems, setCurrentItems] = useState<DashItemType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,8 +24,10 @@ export default function ItemsPage() {
       setCurrentItems(items.data);
       setIsLoading(false);
     }
-    getItems();
-  }, [searchParams]);
+    if (!isOpen) {
+      getItems();
+    }
+  }, [isOpen, searchParams]);
 
   return (
     <ScrollArea className="flex flex-col flex-1">
