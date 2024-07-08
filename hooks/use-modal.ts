@@ -4,21 +4,11 @@ import { create } from "zustand";
 
 // TODO: add ModalData to match item, for edit item purposes
 
-export type ModalType = "createItem" | "editItem";
+export type ModalType = "createItem" | "editItem" | "deleteItem";
 
 interface ModalData {
   item?: DashItemType;
-  apiUrl?: string;
-  query?: Record<string, any>;
-  message?: {
-    name: string;
-    content: string;
-    imageUrl: string;
-    timestamp: string;
-    isImage: string | false | null;
-    isPdf: string | false | null;
-    fileUrl?: string | null;
-  };
+  itemId?: string;
 }
 
 interface ModalStore {

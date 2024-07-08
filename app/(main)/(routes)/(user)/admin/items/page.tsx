@@ -30,11 +30,11 @@ export default function ItemsPage() {
   }, [isOpen, searchParams]);
 
   return (
-    <ScrollArea className="flex flex-col flex-1">
+    <ScrollArea className="flex flex-col flex-1 justify-center items-center">
       {isLoading ? (
         <DashItemSkeletonGrid />
       ) : (
-        <div>
+        <div className="flex flex-col flex-1 justify-center items-center">
           {currentItems.length > 0 ? (
             <div className="items-grid">
               {currentItems.map((item) => (
@@ -42,7 +42,11 @@ export default function ItemsPage() {
               ))}
             </div>
           ) : (
-            <div>no hay productos</div>
+            <div className="flex flex-1 justify-center items-center px-5 md:px-10 md:max-w-[350px] mt-[250px] text-center">
+              <p className="flex justify-center items-center text-4xl text-dash_text text-center">
+                No hay articulos con estas caracteristicas!
+              </p>
+            </div>
           )}
         </div>
       )}

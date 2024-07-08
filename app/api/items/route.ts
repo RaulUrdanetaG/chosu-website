@@ -167,3 +167,23 @@ export async function GET(req: NextRequest) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  const admin = await checkAdmin();
+  const itemId = req.nextUrl.searchParams.get("itemId");
+
+  if (!admin) return new NextResponse("Unauthorized", { status: 401 });
+  if (!itemId) return new NextResponse("Form values missing", { status: 400 });
+
+  try {
+    await db.item.delete({
+      where: {
+        id: itemId,
+      },
+    });
+
+    return new NextResponse("success", { status: 200 });
+  } catch (error) {
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}

@@ -112,8 +112,6 @@ export default function EditItemModal() {
   function handleClose() {
     resetImages();
     resetTags();
-    resetLocation();
-    form.reset();
     onClose();
   }
 

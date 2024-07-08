@@ -43,7 +43,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Es necesario el nombre del producto" }),
@@ -63,8 +62,6 @@ export default function AddItemModal() {
   const { images, resetImages, handleImageUpload, shift } = useImages();
 
   const { isOpen, onClose, type } = useModal();
-
-  const router = useRouter();
 
   const isModalOpen = isOpen && type === "createItem";
 
@@ -102,8 +99,6 @@ export default function AddItemModal() {
     resetImages();
     resetTags();
     resetLocation();
-    window.location.reload();
-    router.refresh();
     onClose();
   }
 
