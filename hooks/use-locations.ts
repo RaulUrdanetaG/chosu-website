@@ -3,23 +3,19 @@ import { useStore } from "./use-store";
 import axios from "axios";
 
 export function useLocations() {
-  const { locations, setLocations } = useStore();
+  const { setLocations } = useStore();
   const [selectedLocation, setSelectedLocation] = useState<string>("");
 
-  useEffect(() => {
-    async function getLocations() {
-      const currentLocations = await axios.get("/api/locations");
-      setLocations(currentLocations.data);
-    }
-    getLocations();
-  }, [setLocations]);
+  async function getLocations() {
+    const currentLocations = await axios.get("/api/locations");
+    setLocations(currentLocations.data);
+  }
 
   function resetLocation() {
     setSelectedLocation("");
   }
 
   return {
-    locations,
     selectedLocation,
     setSelectedLocation,
     resetLocation,

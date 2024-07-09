@@ -5,43 +5,24 @@ type Store = {
   tags: Tag[];
   owners: Owner[];
   locations: Location[];
-  // filter: {
-  //   query?: string;
-  //   tags?: string[];
-  //   owner?: string;
-  //   location?: string;
-  // };
+  page: number;
 };
 
 type Actions = {
   setTags: (tags: Tag[]) => void;
   setOwners: (owners: Owner[]) => void;
   setLocations: (locations: Location[]) => void;
-  // setFilter: (filter: {
-  //   query?: string;
-  //   tags?: string[];
-  //   owner?: string;
-  //   location?: string;
-  // }) => void;
-  // resetFilter: () => void;
+  setPage: (page: number) => void;
 };
 
 export const useStore = create<Store & Actions>((set) => ({
   tags: [],
   owners: [],
   locations: [],
-  // filter: {
-  //   query: "",
-  //   owner: "",
-  //   location: "",
-  //   tags: [],
-  // },
+  page: 1,
 
   setTags: (tags) => set({ tags }),
   setOwners: (owners) => set({ owners }),
   setLocations: (locations) => set({ locations }),
-
-  // setFilter: (filter) => set({ filter }),
-  // resetFilter: () =>
-  //   set({ filter: { query: "", tags: [], owner: "", location: "" } }),
+  setPage: (page) => set({ page }),
 }));
