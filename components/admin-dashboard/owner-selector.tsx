@@ -1,9 +1,5 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+"use client";
+
 import { Owner } from "@prisma/client";
 import NewLocationButton from "./new-location-button";
 import {
@@ -11,7 +7,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
@@ -34,7 +29,11 @@ export default function OwnerSelector({
 }: LocationSelectorProps) {
   return (
     <div className="flex flex-col justify-between items-center gap-1">
-      <div className={cn(type === "id" ? "space-y-2" : "flex flex-col items-center space-y-1")}>
+      <div
+        className={cn(
+          type === "id" ? "space-y-2" : "flex flex-col items-center space-y-1"
+        )}
+      >
         <p
           className={cn(
             "flex items-center  font-medium mt-[3px]",
