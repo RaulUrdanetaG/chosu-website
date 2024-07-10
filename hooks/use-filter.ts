@@ -1,82 +1,62 @@
-import { useEffect, useState } from "react";
-import { useDebounce } from "use-debounce";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-export function useFilter() {
-  // const { filter, setFilter, resetFilter } = useStore();
-  const searchParams = useSearchParams();
+type Filters = {
+  [key: string]: string | string[];
+};
+
+export function useFilters(filterKeys: { key: string; isArray?: boolean }[]) {
+  const router = useRouter();
   const pathname = usePathname();
-  const { replace } = useRouter();
-
-  // Name filter
-  const [filterText, setFilterText] = useState("");
-  const [filterValue] = useDebounce(filterText, 300);
-
-  // Owner filter
-  const [ownerFilter, setOwnerFilter] = useState("");
-
-  // Location filter
-  const [locationFilter, setLocationFilter] = useState("");
-
-  // Tags filter
-  const [tagsFilter, setTagsFilter] = useState<string[]>([]);
-
-  function resetFilters() {
-    setFilterText("");
-
-    setLocationFilter("");
-    setOwnerFilter("");
-    setTagsFilter([]);
-  }
+  const searchParams = useSearchParams();
+  const [filters, setFilters] = useState<Filters>({});
+  const prevSearchParams = useRef<string | null>(null);
 
   useEffect(() => {
-    function setSearchParams() {
+    const paramsString = searchParams.toString();
+    if (prevSearchParams.current === paramsString) return;
+    prevSearchParams.current = paramsString;
+
+    const newFilters: Filters = {};
+    filterKeys.forEach(({ key, isArray }) => {
+      const values = searchParams.get(key) || "";
+      newFilters[key] = isArray
+        ? values
+          ? values.split(",")
+          : []
+        : values || "";
+    });
+    setFilters(newFilters);
+  }, [searchParams, filterKeys]);
+
+  const setFilter = useCallback(
+    (key: string, value: string | string[]) => {
       const params = new URLSearchParams(searchParams.toString());
-
-      if (filterValue !== "") {
-        params.set("q", filterValue);
+      if (Array.isArray(value)) {
+        if (value.length > 0) {
+          params.set(key, value.join(","));
+        } else {
+          params.delete(key);
+        }
       } else {
-        params.delete("q");
+        if (value) {
+          params.set(key, value);
+        } else {
+          params.delete(key);
+        }
       }
+      router.push(`${pathname}?${params.toString()}`);
+      setFilters((prevFilters) => ({ ...prevFilters, [key]: value }));
+    },
+    [router, pathname, searchParams]
+  );
 
-      if (ownerFilter !== "") {
-        params.set("o", ownerFilter);
-      } else {
-        params.delete("o");
-      }
+  const resetFilters = useCallback(() => {
+    router.push(pathname);
+    setFilters(
+      filterKeys.reduce((acc, { key }) => ({ ...acc, [key]: "" }), {})
+    );
+  }, [router, pathname, filterKeys]);
 
-      if (locationFilter !== "") {
-        params.set("l", locationFilter);
-      } else {
-        params.delete("l");
-      }
-
-      if (tagsFilter.length > 0) {
-        const tags = tagsFilter.join(" ");
-        params.set("t", tags);
-      } else {
-        params.delete("t");
-      }
-
-      replace(`${pathname}?${params.toString()}`);
-    }
-
-    setSearchParams();
-  }, [
-    filterValue,
-    pathname,
-    replace,
-    searchParams,
-    ownerFilter,
-    locationFilter,
-    tagsFilter,
-  ]);
-
-  return {
-    resetFilters,
-    setFilterText,
-    setOwnerFilter,
-    setLocationFilter,
-    setTagsFilter,
-  };
+  return { filters, setFilter, resetFilters };
 }
