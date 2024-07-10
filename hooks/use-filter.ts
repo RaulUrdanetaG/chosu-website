@@ -29,6 +29,16 @@ export function useFilters(filterKeys: { key: string; isArray?: boolean }[]) {
     setFilters(newFilters);
   }, [searchParams, filterKeys]);
 
+  useEffect(() => {
+    // Initialize 'page' filter with default value 1 if it's not already set
+    if (!searchParams.has("page")) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("page", "1");
+      router.replace(`${pathname}?${params.toString()}`);
+      setFilters((prevFilters) => ({ ...prevFilters, page: "1" }));
+    }
+  }, [searchParams, router, pathname]);
+
   const setFilter = useCallback(
     (key: string, value: string | string[]) => {
       const params = new URLSearchParams(searchParams.toString());
