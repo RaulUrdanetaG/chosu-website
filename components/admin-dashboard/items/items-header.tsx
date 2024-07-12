@@ -2,15 +2,10 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useFilter } from "@/hooks/use-filter";
+import { useFilters } from "@/hooks/use-filter";
 import { useModal } from "@/hooks/use-modal";
 import { MobileToggleAdmin } from "../mobile-toggle";
 import { Plus, Search } from "lucide-react";
-import { useSearchParams } from "next/navigation";
-import { useLocations } from "@/hooks/use-locations";
-import { useTags } from "@/hooks/use-tags";
-import { useEffect } from "react";
-import { useOwners } from "@/hooks/use-owners";
 
 import LocationSelector from "@/components/admin-dashboard/location-selector";
 import TagSelector from "@/components/admin-dashboard/tag-selector";
@@ -23,41 +18,59 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useStore } from "@/hooks/use-store";
+import { Location, Owner, Tag } from "@prisma/client";
+import { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
 
-export default function ItemsHeader() {
+interface ItemsHeaderProps {
+  tags: Tag[];
+  locations: Location[];
+  owners: Owner[];
+}
+
+export default function ItemsHeader({
+  tags,
+  locations,
+  owners,
+}: ItemsHeaderProps) {
   const { onOpen } = useModal();
-  const searchParams = useSearchParams();
 
-  const { locations, selectedLocation, setSelectedLocation } = useLocations();
-  const { tags, selectedTags, setSelectedTags } = useTags();
-  const { owners, selectedOwner, setSelectedOwner } = useOwners();
-
-  const {
-    setFilterText,
-    setLocationFilter,
-    setTagsFilter,
-    setOwnerFilter,
-    resetFilters,
-  } = useFilter();
+  const { setLocations, setTags, setOwners } = useStore();
+  const { filters, setFilter, resetFilters } = useFilters([
+    { key: "q" },
+    { key: "o" },
+    { key: "l" },
+    { key: "t", isArray: true },
+  ]); //query, owner, location, tags
 
   useEffect(() => {
-    setLocationFilter(selectedLocation);
-    setTagsFilter(selectedTags);
-    setOwnerFilter(selectedOwner);
-  }, [
-    selectedLocation,
-    selectedTags,
-    selectedOwner,
-    setOwnerFilter,
-    setLocationFilter,
-    setTagsFilter,
-  ]);
+    setLocations(locations);
+    setTags(tags);
+    setOwners(owners);
+  }, [locations, tags, owners, setLocations, setTags, setOwners]);
 
-  function restoreFilters() {
-    resetFilters();
-    setSelectedLocation("");
-    setSelectedOwner("");
-    setSelectedTags([]);
+  const [queryFilter, setQueryFilter] = useState("");
+  const [filterQuery] = useDebounce(queryFilter, 300);
+
+  function handleQueryChange(filter: string) {
+    setQueryFilter(filter);
+  }
+  useEffect(() => {
+    setFilter("q", filterQuery);
+  }, [filterQuery, setFilter]);
+
+  function handleOwnerChange(filter: string) {
+    setFilter("o", filter);
+  }
+
+  function handleTagsChange(filter: string[]) {
+    console.log(filter);
+    setFilter("t", filter);
+  }
+
+  function handleLocationChange(filter: string) {
+    setFilter("l", filter);
   }
 
   return (
@@ -84,23 +97,23 @@ export default function ItemsHeader() {
             </SheetHeader>
             <div className="flex gap-1">
               <OwnerSelector
-                selectedOwner={selectedOwner}
+                selectedOwner={filters.o as string}
                 owners={owners}
-                handleGroupChange={setSelectedOwner}
+                handleGroupChange={handleOwnerChange}
                 type="name"
                 add={false}
               />
               <TagSelector
-                selectedTags={selectedTags}
+                selectedTags={filters.t as string[]}
                 tags={tags}
-                handleGroupChange={setSelectedTags}
+                handleGroupChange={handleTagsChange}
                 type="name"
                 add={false}
               />
               <LocationSelector
-                selectedLocation={selectedLocation}
+                selectedLocation={filters.l as string}
                 locations={locations}
-                handleGroupChange={setSelectedLocation}
+                handleGroupChange={handleLocationChange}
                 type="name"
                 add={false}
               />
@@ -109,13 +122,13 @@ export default function ItemsHeader() {
               <p className="text-[14px]">Buscar:</p>
               <Input
                 className="bg-zinc-100 h-9 max-w-[200px]"
-                defaultValue={searchParams.get("q")?.toString()}
-                onChange={(e) => setFilterText(e.target.value)}
+                defaultValue={filters.q}
+                onChange={(e) => handleQueryChange(e.target.value)}
               />
             </div>
             <a
               className="flex w-[200px] items-center justify-center md:hidden bg-[#EF6F6C] rounded-md py-1 hover:cursor-pointer"
-              onClick={restoreFilters}
+              onClick={resetFilters}
             >
               Limpiar filtros
             </a>
@@ -123,7 +136,7 @@ export default function ItemsHeader() {
         </Sheet>
         <a
           className="hidden md:flex ml-2 items-center justify-center bg-[#EF6F6C] rounded-md p-1 px-2 text-[13px] hover:cursor-pointer"
-          onClick={restoreFilters}
+          onClick={resetFilters}
         >
           Limpiar filtros
         </a>

@@ -48,7 +48,7 @@ export default function LocationSelector({
                 type === "id" ? "w-[80px] h-[44px]" : "h-9 w-16"
               )}
             >
-              {selectedLocation.length === 0 ? "Elige" : "1"}
+              {selectedLocation === "" ? "Elige" : "1"}
             </span>
           </DropdownMenuTrigger>
           <DropdownMenuContent side="top" className="p-2 w-[350px] h-[180px]">

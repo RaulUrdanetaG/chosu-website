@@ -43,6 +43,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useStore } from "@/hooks/use-store";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Es necesario el nombre del producto" }),
@@ -55,10 +56,11 @@ const formSchema = z.object({
 });
 
 export default function AddItemModal() {
-  const { owners } = useOwners();
-  const { locations, selectedLocation, setSelectedLocation, resetLocation } =
+  const { locations, owners, tags } = useStore();
+
+  const { selectedLocation, setSelectedLocation, resetLocation } =
     useLocations();
-  const { tags, selectedTags, setSelectedTags, resetTags } = useTags();
+  const { selectedTags, setSelectedTags, resetTags } = useTags();
   const { images, resetImages, handleImageUpload, shift } = useImages();
 
   const { isOpen, onClose, type } = useModal();

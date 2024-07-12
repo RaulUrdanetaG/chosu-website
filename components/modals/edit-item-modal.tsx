@@ -6,7 +6,6 @@ import axios from "axios";
 import { uploadImages } from "@/lib/utils";
 
 import { useModal } from "@/hooks/use-modal";
-import { useOwners } from "@/hooks/use-owners";
 import { useLocations } from "@/hooks/use-locations";
 import { useTags } from "@/hooks/use-tags";
 import { useImages } from "@/hooks/use-images";
@@ -44,6 +43,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect } from "react";
+import { useStore } from "@/hooks/use-store";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Es necesario el nombre del producto" }),
@@ -56,10 +56,10 @@ const formSchema = z.object({
 });
 
 export default function EditItemModal() {
-  const { owners } = useOwners();
-  const { locations, selectedLocation, setSelectedLocation, resetLocation } =
-    useLocations();
-  const { tags, selectedTags, setSelectedTags, resetTags } = useTags();
+  const { locations, owners, tags } = useStore();
+
+  const { selectedLocation, setSelectedLocation } = useLocations();
+  const { selectedTags, setSelectedTags, resetTags } = useTags();
   const {
     images,
     setImagePreviews,
