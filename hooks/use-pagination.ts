@@ -33,5 +33,5 @@ export function usePagination({ pagination }: { pagination: paginationType }) {
     }
   }
 
-  return { totalPages: 17, currentPage, nextPage, prevPage, goToPage };
+  return { totalPages, currentPage, nextPage, prevPage, goToPage };
 }
