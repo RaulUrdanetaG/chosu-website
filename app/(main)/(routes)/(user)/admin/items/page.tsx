@@ -54,8 +54,8 @@ export default function ItemsPage() {
               ))}
             </div>
           ) : (
-            <div className="flex flex-1 justify-center items-center px-5 md:px-10 md:max-w-[350px] mt-[250px] text-center">
-              <p className="flex justify-center items-center text-4xl text-dash_text text-center">
+            <div className="flex flex-1 justify-center items-center px-5 md:px-10 mx-auto md:max-w-[350px] mt-[250px] text-center">
+              <p className="flex justify-center items-center text-4xl mx-auto text-dash_text text-center">
                 No hay articulos con estas caracteristicas!
               </p>
             </div>
