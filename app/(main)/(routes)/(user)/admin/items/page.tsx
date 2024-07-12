@@ -2,7 +2,8 @@
 
 import DashItem from "@/components/admin-dashboard/items/dash-item";
 import { DashItemSkeletonGrid } from "@/components/admin-dashboard/items/dash-item-skeleton";
-import ItemsPagination from "@/components/admin-dashboard/items/items-pagination";
+import ItemsPagination from "@/components/Pagination";
+
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useModal } from "@/hooks/use-modal";
 import { DashItemType, paginationType } from "@/types";

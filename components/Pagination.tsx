@@ -84,7 +84,7 @@ export default function ItemsPagination({
   };
 
   return (
-    <Pagination>
+    <Pagination className="max-w-6">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
