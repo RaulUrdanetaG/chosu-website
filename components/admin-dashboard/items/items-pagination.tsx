@@ -22,8 +22,6 @@ export default function ItemsPagination({
       pagination,
     });
 
-  console.log(totalPages);
-
   const renderPaginationItems = () => {
     let items = [];
 
