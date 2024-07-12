@@ -1,4 +1,3 @@
-import { useFilter } from "@/hooks/use-filter";
 import { checkAdmin } from "@/lib/check-admin";
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
@@ -17,6 +16,8 @@ interface itemDataProps {
   id?: string;
 }
 
+const paginationBatch = 25;
+
 export async function POST(req: Request) {
   const admin = await checkAdmin();
   const itemData: itemDataProps = await req.json();
@@ -32,9 +33,9 @@ export async function POST(req: Request) {
       boughtAt: itemData.values.boughtAt,
       description: itemData.values.description,
       imgUrls: itemData.imageLinks,
-      owner: itemData.values.owner, // Asegúrate de proporcionar el ID del propietario
+      owner: itemData.values.owner,
       location: itemData.location,
-      tags: itemData.tags, // Asegúrate de proporcionar la ubicación
+      tags: itemData.tags,
     };
 
     await db.item.create({
@@ -106,8 +107,11 @@ export async function GET(req: NextRequest) {
   const owner = url.searchParams.get("o");
   const location = url.searchParams.get("l");
   const tags = url.searchParams.get("t");
+  const page = url.searchParams.get("page");
 
   const filters: any = {};
+  const pageNumber = Number(page);
+  let skip;
 
   if (location) {
     const locationRecord = await db.location.findFirst({
@@ -119,7 +123,7 @@ export async function GET(req: NextRequest) {
   }
 
   if (tags) {
-    const tagsArray = (tags as string).split(" ");
+    const tagsArray = (tags as string).split(",");
     const tagsRecords = await db.tag.findMany({
       where: {
         name: { in: tagsArray },
@@ -148,7 +152,22 @@ export async function GET(req: NextRequest) {
   }
 
   try {
+    const itemsCount = await db.item.count({
+      where: filters,
+    });
+
+    if (pageNumber <= 1) {
+      skip = 0;
+    } else {
+      skip = (pageNumber - 1) * paginationBatch;
+    }
+
+    console.log(skip);
+
     const items = await db.item.findMany({
+      skip,
+      take: paginationBatch,
+
       where: filters,
       include: {
         location: true,
@@ -162,7 +181,7 @@ export async function GET(req: NextRequest) {
 
     if (!items) return NextResponse.json({ message: "No items" });
 
-    return NextResponse.json(items);
+    return NextResponse.json({ items, itemsCount, paginationBatch });
   } catch (error) {
     return new NextResponse("Internal Error", { status: 500 });
   }

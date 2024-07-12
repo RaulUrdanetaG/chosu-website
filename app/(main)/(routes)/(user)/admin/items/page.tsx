@@ -2,9 +2,10 @@
 
 import DashItem from "@/components/admin-dashboard/items/dash-item";
 import { DashItemSkeletonGrid } from "@/components/admin-dashboard/items/dash-item-skeleton";
+import ItemsPagination from "@/components/admin-dashboard/items/items-pagination";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useModal } from "@/hooks/use-modal";
-import { DashItemType } from "@/types";
+import { DashItemType, paginationType } from "@/types";
 
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
@@ -15,13 +16,23 @@ export default function ItemsPage() {
   const { isOpen } = useModal();
 
   const [currentItems, setCurrentItems] = useState<DashItemType[]>([]);
+
+  const [pagination, setPagination] = useState<paginationType>({
+    itemsCount: 0,
+    paginationBatch: 0,
+  });
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function getItems() {
       setIsLoading(true);
-      const items = await axios.get(`/api/items?${searchParams.toString()}`);
-      setCurrentItems(items.data);
+      const { data } = await axios.get(`/api/items?${searchParams.toString()}`);
+      setCurrentItems(data.items);
+      setPagination({
+        itemsCount: data.itemsCount,
+        paginationBatch: data.paginationBatch,
+      });
       setIsLoading(false);
     }
     if (!isOpen) {
@@ -34,7 +45,7 @@ export default function ItemsPage() {
       {isLoading ? (
         <DashItemSkeletonGrid />
       ) : (
-        <div className="flex flex-col flex-1 justify-center items-center">
+        <div>
           {currentItems.length > 0 ? (
             <div className="items-grid">
               {currentItems.map((item) => (
@@ -50,6 +61,7 @@ export default function ItemsPage() {
           )}
         </div>
       )}
+      {currentItems.length > 0 && <ItemsPagination pagination={pagination} />}
     </ScrollArea>
   );
 }

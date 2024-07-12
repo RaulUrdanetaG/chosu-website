@@ -5,3 +5,8 @@ export type DashItemType = Item & {
   location: Location;
   tags: Tag[];
 };
+
+export type paginationType = {
+  itemsCount: number;
+  paginationBatch: number;
+};
