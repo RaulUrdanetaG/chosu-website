@@ -161,9 +161,7 @@ export async function GET(req: NextRequest) {
     } else {
       skip = (pageNumber - 1) * paginationBatch;
     }
-
-    console.log(skip);
-
+    
     const items = await db.item.findMany({
       skip,
       take: paginationBatch,
